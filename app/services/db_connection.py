@@ -7,7 +7,7 @@ def connect_to_database():
         tuple: (connection, cursor)
     """
 
-    with sqlite3.connect('your_database.db') as conn:
+    with sqlite3.connect('database.db') as conn:
         cursor = conn.cursor()
         return conn, cursor
 
