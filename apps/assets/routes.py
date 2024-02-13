@@ -78,7 +78,7 @@ def update_assets_form(assets_id):
             # Use relationship property for direct update (if applicable)
             if hasattr(asset, 'assets_type'):
                 asset.assets_type = form.assets_type.data
-                asset.house_type = form.room_type.data
+                asset.house_type = form.house_type.data
                 asset.accommodates=form.accommodates.data,
                 asset.bathrooms=form.bathrooms.data,
                 asset.bedrooms=form.bedrooms.data,
