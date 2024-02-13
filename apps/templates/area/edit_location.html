@@ -1,0 +1,110 @@
+{% extends "layouts/base.html" %}
+{% block title %} Edit Location {% endblock %}
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+{% block content %}
+    <h1>Edit Location</h1>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+
+        <div class="mb-3">
+            <label for="house_number" class="form-label">House Number:</label>
+            {{ form.house_number(class="form-control") }}
+            {% for error in form.house_number.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            <label for="street" class="form-label">Street:</label>
+            {{ form.street(class="form-control") }}
+            {% for error in form.street.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            <label for="neighborhood" class="form-label">Neighborhood:</label>
+            {{ form.neighborhood(class="form-control") }}
+            {% for error in form.neighborhood.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            <label for="city" class="form-label">City:</label>
+            {{ form.city(class="form-control") }}
+            {% for error in form.city.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            <label for="state" class="form-label">State:</label>
+            {{ form.state(class="form-control") }}
+            {% for error in form.state.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            <label for="zipcode" class="form-label">Zipcode:</label>
+            {{ form.zipcode(class="form-control") }}
+            {% for error in form.zipcode.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            <label for="market" class="form-label">Market:</label>
+            {{ form.market(class="form-control") }}
+            {% for error in form.market.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            <label for="country_code" class="form-label">Country Code:</label>
+            {{ form.country_code(class="form-control") }}
+            {% for error in form.country_code.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            <label for="country" class="form-label">Country:</label>
+            {{ form.country(class="form-control") }}
+            {% for error in form.country.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            <label for="latitude" class="form-label">Latitude:</label>
+            {{ form.latitude(class="form-control") }}
+            {% for error in form.latitude.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            <label for="longitude" class="form-label">Longitude:</label>
+            {{ form.longitude(class="form-control") }}
+            {% for error in form.longitude.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            <label for="is_location_exact" class="form-label">Is Location Exact:</label>
+            {{ form.is_location_exact(class="form-control") }}
+            {% for error in form.is_location_exact.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Location</button>
+    </form>
+{% endblock content %}

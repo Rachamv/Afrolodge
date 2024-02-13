@@ -1,0 +1,155 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+Add Your Asset
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+    /* Custom styles */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .form-label {
+      font-weight: bold;
+    }
+    .form-control {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+      border: 1px solid #ced4da;
+      margin-bottom: 1rem;
+    }
+    .text-danger {
+      color: red;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+  </style>
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container">
+  <h2>Create Asset Form</h2>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+    <div class="mb-3">
+      {{ form.assets_type.label(class="form-label") }} {{
+      form.assets_type(class="form-control") }} {% for error in
+      form.assets_type.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      {{ form.room_type.label(class="form-label") }} {{
+      form.house_type(class="form-control") }} {% for error in
+      form.house_type.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      {{ form.accommodates.label(class="form-label") }} {{
+      form.accommodates(class="form-control") }} {% for error in
+      form.accommodates.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      {{ form.bathrooms.label(class="form-label") }} {{
+      form.bathrooms(class="form-control") }} {% for error in
+      form.bathrooms.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      {{ form.bedrooms.label(class="form-label") }} {{
+      form.bedrooms(class="form-control") }} {% for error in
+      form.bedrooms.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      {{ form.beds.label(class="form-label") }} {{
+      form.beds(class="form-control") }} {% for error in form.beds.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      {{ form.bed_type.label(class="form-label") }} {{
+      form.bed_type(class="form-control") }} {% for error in
+      form.bed_type.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      {{ form.amenities.label(class="form-label") }} {{
+      form.amenities(class="form-control") }} {% for error in
+      form.amenities.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      {{ form.square_feet.label(class="form-label") }} {{
+      form.square_feet(class="form-control") }} {% for error in
+      form.square_feet.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      {{ form.guests_included.label(class="form-label") }} {{
+      form.guests_included(class="form-control") }} {% for error in
+      form.guests_included.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      {{ form.extra_people.label(class="form-label") }} {{
+      form.extra_people(class="form-control") }} {% for error in
+      form.extra_people.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      {{ form.minimum_nights.label(class="form-label") }} {{
+      form.minimum_nights(class="form-control") }} {% for error in
+      form.minimum_nights.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      {{ form.maximum_nights.label(class="form-label") }} {{
+      form.maximum_nights(class="form-control") }} {% for error in
+      form.maximum_nights.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      {{ form.location_id.label(class="form-label") }} {{
+      form.location_id(class="form-control") }} {% for error in
+      form.location_id.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      {{ form.rate_type.label(class="form-label") }} {{
+      form.rate_type(class="form-select") }} {% for error in
+      form.rate_type.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+{% endblock content %}

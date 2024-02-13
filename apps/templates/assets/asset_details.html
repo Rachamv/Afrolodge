@@ -1,0 +1,92 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+{{ asset.name }} | Details
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+    /* Custom styles */
+    .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #666;
+            margin-top: 20px;
+        }
+        p {
+            color: #444;
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+  </style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <h1>{{ asset.name }} Details</h1>
+
+    <!-- Display asset details -->
+    <p><strong>Location:</strong> {{ asset.location }}</p>
+    <p><strong>Type:</strong> {{ asset.assets_type }}</p>
+    <p><strong>House Type:</strong> {{ asset.house_type }}</p>
+    <p><strong>Accommodates:</strong> {{ asset.accommodates }}</p>
+    <p><strong>Bathrooms:</strong> {{ asset.bathrooms }}</p>
+    <p><strong>Bedrooms:</strong> {{ asset.bedrooms }}</p>
+    <p><strong>Beds:</strong> {{ asset.beds }}</p>
+    <p><strong>Bed Type:</strong> {{ asset.bed_type }}</p>
+    <p><strong>Amenities:</strong> {{ asset.amenities }}</p>
+    <p><strong>Square Feet:</strong> {{ asset.square_feet }}</p>
+    <p><strong>Guests Included:</strong> {{ asset.guests_included }}</p>
+    <p><strong>Extra People:</strong> {{ asset.extra_people }}</p>
+    <p><strong>Minimum Nights:</strong> {{ asset.minimum_nights }}</p>
+    <p><strong>Maximum Nights:</strong> {{ asset.maximum_nights }}</p>
+    <p><strong>Rate Type:</strong> {{ asset.rate_type }}</p>
+    <!-- Add more asset details as needed -->
+
+    <!-- Display recent reviews -->
+    <h2>Recent Reviews</h2>
+    <ul>
+        {% if recent_reviews %}
+            {% for review in recent_reviews %}
+                <li>
+                    <p><strong>Review:</strong> {{ review.text }}</p>
+                    <p><strong>Rating:</strong> {{ review.rating }}</p>
+                    <p><strong>Timestamp:</strong> {{ review.timestamp }}</p>
+                </li>
+            {% endfor %}
+        {% else %}
+            <li>No reviews available.</li>
+        {% endif %}
+    </ul>
+
+    <!-- Conditional back link -->
+    {% if asset.listed %}
+    <a href="{{ url_for('assets.list') }}" class="back-link">Assets is Listed</a>
+    {% else %}
+    <a href="{{ url_for('home') }}" class="back-link">Back to Home</a>
+    {% endif %}
+{% endblock content %}

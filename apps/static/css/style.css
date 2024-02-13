@@ -1,0 +1,19 @@
+body {
+    padding-top: 70px; 
+  }
+.navbar {
+    margin-top: 20px;
+  }
+.navbar, 
+.input-group,
+.d-flex.flex-row, 
+.d-flex.flex-wrap {
+  margin-bottom: 20px;
+}
+.bg-light.border {
+    padding: 20px;
+  }
+.flex-fill ul {
+    list-style: none;
+    padding-left: 0; 
+  }

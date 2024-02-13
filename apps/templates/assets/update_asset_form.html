@@ -1,0 +1,112 @@
+{% extends "layouts/base.html" %}
+{% block title %}
+{{ asset.name }} | Update Asset
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* Custom styling */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+        }
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+        <h2>Update Asset</h2>
+        <form action="{{ url_for('assets.update_assets_form', assets_id=asset.id) }}" method="POST">
+            {{ form.csrf_token }}
+            <div class="form-group">
+                <label for="assets_type">Assets Type</label>
+                {{ form.assets_type }}
+            </div>
+            <div class="form-group">
+                <label for="house_type">Room Type</label>
+                {{ form.house_type }}
+            </div>
+            <div class="form-group">
+                <label for="accommodates">Accommodates</label>
+                {{ form.accommodates }}
+            </div>
+            <div class="form-group">
+                <label for="bathrooms">Bathrooms</label>
+                {{ form.bathrooms }}
+            </div>
+            <div class="form-group">
+                <label for="bedrooms">Bedrooms</label>
+                {{ form.bedrooms }}
+            </div>
+            <div class="form-group">
+                <label for="beds">Beds</label>
+                {{ form.beds }}
+            </div>
+            <div class="form-group">
+                <label for="bed_type">Bed Type</label>
+                {{ form.bed_type }}
+            </div>
+            <div class="form-group">
+                <label for="amenities">Amenities</label>
+                {{ form.amenities }}
+            </div>
+            <div class="form-group">
+                <label for="square_feet">Square Feet</label>
+                {{ form.square_feet }}
+            </div>
+            <div class="form-group">
+                <label for="guests_included">Guests Included</label>
+                {{ form.guests_included }}
+            </div>
+            <div class="form-group">
+                <label for="extra_people">Extra People</label>
+                {{ form.extra_people }}
+            </div>
+            <div class="form-group">
+                <label for="minimum_nights">Minimum Nights</label>
+                {{ form.minimum_nights }}
+            </div>
+            <div class="form-group">
+                <label for="maximum_nights">Maximum Nights</label>
+                {{ form.maximum_nights }}
+            </div>
+            <div class="form-group">
+                <label for="rate_type">Rate Type</label>
+                {{ form.rate_type }}
+            </div>
+            <button type="submit">Update Asset</button>
+        </form>
+
+</body>
+</html>
