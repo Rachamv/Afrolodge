@@ -26,7 +26,7 @@ def create_asset():
             user=current_user,
             location=location,
             assets_type=form.assets_type.data,
-            house_type=form.room_type.data,
+            house_type=form.house_type.data,
             accommodates=form.accommodates.data,
             bathrooms=form.bathrooms.data,
             bedrooms=form.bedrooms.data,
