@@ -1,0 +1,162 @@
+{% extends "layouts/base.html" %}
+{% block title %}Create Listing{% endblock %}
+{% block stylesheets %}
+<style>
+    /* Custom styles for the form */
+    .form-control {
+        margin-bottom: 15px;
+    }
+
+    .text-danger {
+        font-size: 14px;
+        color: red;
+    }
+
+    .btn-primary {
+        margin-top: 20px;
+    }
+</style>
+
+{% endblock stylesheets %}
+{% block content %}
+    <div class="container mt-5">
+        <h2>Create Listing</h2>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
+            <div class="mb-3">
+                {{ form.asset_id.label }} {{ form.asset_id(class="form-control") }}
+                {% for error in form.asset_id.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.location_id.label }} {{ form.location_id(class="form-control") }}
+                {% for error in form.location_id.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.name.label }} {{ form.name(class="form-control") }}
+                {% for error in form.name.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.summary.label }} {{ form.summary(class="form-control") }}
+                {% for error in form.summary.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.description.label }} {{ form.description(class="form-control") }}
+                {% for error in form.description.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.experiences_offered.label }} {{ form.experiences_offered(class="form-control") }}
+                {% for error in form.experiences_offered.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.neighborhood_overview.label }} {{ form.neighborhood_overview(class="form-control") }}
+                {% for error in form.neighborhood_overview.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.notes.label }} {{ form.notes(class="form-control") }}
+                {% for error in form.notes.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.transit.label }} {{ form.transit(class="form-control") }}
+                {% for error in form.transit.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.access.label }} {{ form.access(class="form-control") }}
+                {% for error in form.access.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.interaction.label }} {{ form.interaction(class="form-control") }}
+                {% for error in form.interaction.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.house_rules.label }} {{ form.house_rules(class="form-control") }}
+                {% for error in form.house_rules.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.picture_url.label }} {{ form.picture_url(class="form-control") }}
+                {% for error in form.picture_url.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.currency.label }} {{ form.currency(class="form-control") }}
+                {% for error in form.currency.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.price.label }} {{ form.price(class="form-control") }}
+                {% for error in form.price.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.daily_price.label }} {{ form.daily_price(class="form-control") }}
+                {% for error in form.daily_price.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.weekly_price.label }} {{ form.weekly_price(class="form-control") }}
+                {% for error in form.weekly_price.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.monthly_price.label }} {{ form.monthly_price(class="form-control") }}
+                {% for error in form.monthly_price.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.security_deposit.label }} {{ form.security_deposit(class="form-control") }}
+                {% for error in form.security_deposit.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.cleaning_fee.label }} {{ form.cleaning_fee(class="form-control") }}
+                {% for error in form.cleaning_fee.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3 form-check">
+                {{ form.instant_bookable(class="form-check-input") }} {{ form.instant_bookable.label(class="form-check-label") }}
+                {% for error in form.instant_bookable.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.overall_satisfaction.label }} {{ form.overall_satisfaction(class="form-control") }}
+                {% for error in form.overall_satisfaction.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+{% endblock content %}

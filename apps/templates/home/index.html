@@ -1,7 +1,45 @@
 {% extends "layouts/base.html" %}
 {% block title %} Home {% endblock %}
 {% block stylesheets %}
+<style>
+  /* Custom styles */
+  body {
+    background-image: url('{{ url_for("static", filename="HouseImages/4.jpg") }}');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
 
+  .search-box {
+    margin-top: 50px;
+  }
+
+  .category-icons {
+    margin-top: 30px;
+    font-size: 1.2rem;
+  }
+
+  .category-icons div {
+    margin-right: 10px;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+  }
+
+  .card-text {
+    margin-bottom: 15px;
+  }
+
+  .card-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+  }
+
+  .show-more-btn {
+    margin-top: 30px;
+    text-align: center;
+  }
+</style>
 {% endblock stylesheets %}
 {% block content %}
       <!-- Search box -->
@@ -25,30 +63,31 @@
       <!-- Content Boxes -->
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
         {% for listing in listings %}
-
         <div class="col mb-4">
           <div class="card h-100">
-            <a href="/listing/{{ listing[5] }}"
-              ><img
-                src="{{ url_for('static', filename='HouseImages/' + listing[0]) }}"
-                class="card-img-top img-fluid"
-            /></a>
+            {% if listing.is_link %}
+            <a href="{{ listing.picture_url }}">
+            {% else %}
+            <a href="#">
+            {% endif %}
+                <img src="{{ url_for('static', filename='HouseImages/' + listing.picture_url) }}" class="card-img-top img-fluid" />
+            </a>
 
-            <div class="card-body ">
-              <a href="/listing/{{ listing[5] }}"
-                ><h5 class="card-title">{{ listing[1] }}</h5></a
+            <div class="card-body">
+              <a href="#" style="text-decoration: none;"
+                ><h5 class="card-title">{{ listing.name }}</h5></a
               >
 
-              <p class="card-text">{{ listing[2] }}</p>
+              <p class="card-text">{{ listing.description }}</p>
 
               <div class="d-flex justify-content-between">
-                <p class="text-muted">Price: {{ listing[3] }} {{listing[6]}}</p>
-                <p class="text-muted">Rating: {{ listing[4] }}</p>
+                <p class="text-muted">Price: {{ listing.price }} {{ listing.currency }}</p>
+                <p class="text-muted">Rating: {{ listing.overall_satisfaction }}</p>
               </div>
             </div>
 
             <div class="card-footer">
-              <a href="/listing/{{ listing[5] }}" class="btn btn-primary w-100"
+              <a href="#" class="btn btn-primary w-100"
                 >View Details</a
               >
             </div>
@@ -59,11 +98,11 @@
 
       <!-- Show More Button -->
       <div class="show-more-btn">
-        {% if page > 1%}
-        <a href="?page={{page-1}}" class="btn btn-primary">Previous</a>
-        <a href="?page={{page+1}}" class="btn btn-primary">Show More</a>
-        {%else%}
-        <a href="?page={{page+1}}" class="btn btn-primary">Show More</a>
-        {%endif%}
+        {% if page > 1 %}
+        <a href="?page={{ page - 1 }}" class="btn btn-primary">Previous</a>
+        <a href="?page={{ page + 1 }}" class="btn btn-primary">Show More</a>
+        {% else %}
+        <a href="?page={{ page + 1 }}" class="btn btn-primary">Show More</a>
+        {% endif %}
       </div>
 {% endblock content %}

@@ -1,52 +1,289 @@
 {% extends "layouts/base.html" %}
 {% block title %} {{ user.username }} | Dashboard {% endblock %}
+
 {% block stylesheets %}
-
 {% endblock stylesheets %}
+
 {% block content %}
-    <h1>{{ welcome_message }}</h1>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">{{ welcome_message }}</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href=" ">Home</a></li>
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
 
-    <h3>User Information</h3>
-    <ul>
-        <li>User ID: {{ user_id }}</li>
-        <li>Username: {{ user.username }}</li>
-        <li>Email: {{ user.email }}</li>
-        <li>Phone: {{ user.phone }}</li>
-        <li>Date Registered: {{ user.registration_date }}</li>
-        <li>About: {{ user.about }}</li>
-        <li>Response Time: {{ user.response_time }}</li>
-        <li>Listings Count: {{ user.listings_count }}</li>
-        <li>Profile Picture: <img src="{{ user.profile_pic }}" alt="Profile Picture"></li>
-    </ul>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Main row -->
+            <div class="row">
+                <!-- Left col -->
+                <section class="col-lg-7">
+                    <!-- Profile -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-pie mr-1"></i>
+                                Profile Information
+                            </h3>
+                        </div><!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="tab-content p-0">
+                                <!-- Profile Info -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        {% if user %}
+                                            <ul>
+                                                <li>User ID: {{ user.id }}</li>
+                                                <li>Username: {{ user.username }}</li>
+                                                <li>Email: {{ user.email }}</li>
+                                                <li>Phone: {{ user.phone }}</li>
+                                                <li>Date Registered: {{ user.registration_date }}</li>
+                                                <li>About: {{ user.about }}</li>
+                                                <li>Response Time: {{ user.response_time }}</li>
+                                                <li>Listings Count: {{ user.listings_count }}</li>
+                                            </ul>
+                                        {% else %}
+                                            <p>No information available. Please add.</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {% if user %}
+                                            <p>Profile Picture:</p>
+                                            <img src="{{ user.profile_pic }}" alt="Profile Picture">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-tools">
+                            <ul class="nav nav-pills ml-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Update Profile</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#sales-chart" data-toggle="tab">Change Password</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /.card -->
 
-    {% if location_info %}
-    <h3>Location Information</h3>
-    <ul>
-        <li>Location ID: {{ location_info.id }}</li>
-        <li>House Number: {{ location_info.house_number }}</li>
-        <li>Street: {{ location_info.street }}</li>
-        <li>Neighborhood: {{ location_info.neighborhood }}</li>
-        <li>City: {{ location_info.city }}</li>
-        <li>State: {{ location_info.state }}</li>
-        <li>Zipcode: {{ location_info.zipcode }}</li>
-        <li>Market: {{ location_info.market }}</li>
-        <li>Country Code: {{ location_info.country_code }}</li>
-        <li>Country: {{ location_info.country }}</li>
-        <li>Latitude: {{ location_info.latitude }}</li>
-        <li>Longitude: {{ location_info.longitude }}</li>
-    </ul>
-    {% endif %}
+                    <!-- Listed Assets -->
+                    <div class="card">
+                        <div class="card-header">
+                          <h2 class="card-title">
+                            <i class="fas fa-chart-pie mr-1"></i>
+                            Listed Assets
+                          </h2>
+                        </div>
+                        <div class="card-body">
+                          {% if listings_info %}
+                                <ul>
+                                    {% for listing in user_listings %}
+                                        <li>Listing ID: {{ listing.id }}, Name: {{ listing.name }}</li>
+                                    {% endfor %}
+                                </ul>
+                          {% else %}
+                              <p class="nav-item">No information available. Please add.</p>
+                          {% endif %}
+                          </div>
+                        <div class="card-tools">
+                          <ul class="nav nav-pills ml-auto">
+                            <li class="nav-item">
+                              <a class="nav-link" href="" data-toggle="tab">Update</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link {{ create_link_active }}" href="{{ url_for('leases_blueprint.create_listing') }}" data-toggle="tab">List Assets</a>
+                            </li>
+                          </ul>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+
+                    <!-- My Assets review -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title
+                            ">
+                                <i class="fas fa-chart-pie mr-1"></i>
+                                My Assets Review
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            {% if reviews %}
+                                <ul>
+                                    {% for review in reviews %}
+                                        <li>{{ review.review_id }}</li>
+                                        <li>{{ review.review }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="nav-item">
+                                    No information available. Please add.
+                                </p>
+                            {% endif %}
+
+                        </div>
+                        <div class="card-tools
+                        ">
+                            <ul class="nav nav-pills ml-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="" data-toggle="tab">Update</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ create_link_active }}" href="" data-toggle="tab">Add Review</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /.card -->
 
 
-    <a href="/update_profile"><h3>Click To Update Your Profile</h3></a>
-    <a href="/update_password"><h3>Add Your Location</h3></a>
-    <a href="/update_profile"><h3>Update Your Location</h3></a>
+                    <!-- To Do List Section Goes Here -->
+                </section>
+                <!-- /.Left col -->
 
-    <a href="/update_password"><h3>Change Password</h3></a>
+                <!-- Right col -->
+                <section class="col-lg-5">
+                    <!-- Location Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-pie mr-1"></i>
+                                Location Information
+                            </h3>
+                        </div><!-- /.card-header -->
+                        <div class="card-body">
+                            {% if location_info %}
+                                <ul>
+                                    <li>Location ID: {{ location_info.id }}</li>
+                                    <li>House Number: {{ location_info.house_number }}</li>
+                                    <li>Street: {{ location_info.street }}</li>
+                                    <li>Neighborhood: {{ location_info.neighborhood }}</li>
+                                    <li>City: {{ location_info.city }}</li>
+                                    <li>State: {{ location_info.state }}</li>
+                                    <li>Zipcode: {{ location_info.zipcode }}</li>
+                                    <li>Market: {{ location_info.market }}</li>
+                                    <li>Country Code: {{ location_info.country_code }}</li>
+                                    <li>Country: {{ location_info.country }}</li>
+                                    <li>Latitude: {{ location_info.latitude }}</li>
+                                    <li>Longitude: {{ location_info.longitude }}</li>
+                                </ul>
+                            {% else %}
+                                <p class="nav-item">No information available. Please add.</p>
+                            {% endif %}
+                        </div>
+                        <div class="card-tools">
+                            <ul class="nav nav-pills ml-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="{{ url_for('area_blueprint.update_location') }}" data-toggle="tab">Update Your Location</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ url_for('area_blueprint.edit_location') }}" data-toggle="tab">Add Location</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /.card -->
 
-    <a href="/update_profile"><h3>Add Your Assets</h3></a>
-    <a href="/update_profile"><h3>Update Your Assets</h3></a>
+                    <!-- Assets Own -->
+                    <div class="card">
+                      <div class="card-header">
+                        <h2 class="card-title">
+                          <i class="fas fa-chart-pie mr-1"></i>
+                          Assets Own
+                        </h2>
+                      </div>
+                      <div class="card-body">
+                        {% if assets_info %}
+                            <ul>
+                                {% for asset in assets %}
+                                    <li>{{ asset.assets_id }}</li>
+                                    <li>{{ asset.assets_type }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="nav-item">No information available. Please add.</p>
+                        {% endif %}
+                        </div>
+                      <div class="card-tools">
+                        <ul class="nav nav-pills ml-auto">
+                          <li class="nav-item">
+                            <a class="nav-link" href="" data-toggle="tab">Update Your Assets</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link {{ create_link_active }}" href="{{ url_for('assets_blueprint.create_asset') }}" data-toggle="tab">Add Assets</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
 
-    <a href="/update_password"><h3>List Your Assets</h3></a>
-    <a href="/update_profile"><h3>Update Your Listings</h3></a>
+                    <!-- /.card -->
+
+                    <!-- Booking -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title
+                            ">
+                                <i class="fas fa-chart-pie mr-1"></i>
+                                Booking
+                            </h2>
+                        </div>
+
+                        <div class="card-body">
+                            {% if bookings %}
+                                <ul>
+                                    {% for booking in bookings %}
+                                        <li>{{ booking.booking_id }}</li>
+                                        <li>{{ booking.booking_date }}</li>
+                                        <li>{{ booking.booking_time }}</li>
+                                        <li>{{ booking.booking_status }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="nav-item">
+                                    No information available. Please add.
+                                </p>
+                            {% endif %}
+
+                        </div>
+                        <div class="card-tools
+                        ">
+                            <ul class="nav nav-pills ml-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="" data-toggle="tab">Update</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ create_link_active }}" href="" data-toggle="tab">Add Booking</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+
+
+                    <!-- Calendar -->
+                    <!-- Calendar Section Goes Here -->
+                </section>
+                <!-- /.Right col -->
+            </div>
+            <!-- /.row (main row) -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
 {% endblock content %}
+

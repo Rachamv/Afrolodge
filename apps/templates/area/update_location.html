@@ -1,14 +1,12 @@
 {% extends "layouts/base.html" %}
-{% block title %} Edit Location {% endblock %}
-{% block stylesheets %}
+{% block title %}Update Location{% endblock %}
 
-{% endblock stylesheets %}
 {% block content %}
-    <h1>Edit Location</h1>
-    <form method="post">
+<div class="container mt-5">
+    <h2>Update Location</h2>
+    <form method="POST" action="{{ url_for('area_blueprint.update_location') }}">
         {{ form.hidden_tag() }}
         {{ form.csrf_token }}
-
         <div class="mb-3">
             <label for="house_number" class="form-label">House Number:</label>
             {{ form.house_number(class="form-control") }}
@@ -105,6 +103,7 @@
             {% endfor %}
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Update</button>
     </form>
+</div>
 {% endblock content %}

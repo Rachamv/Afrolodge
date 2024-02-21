@@ -6,7 +6,10 @@ from apps.authentication import blueprint
 from apps.authentication.forms import LoginForm, CreateAccountForm
 from apps.authentication.models import Users
 from apps.area.models import Location
-from apps.authentication.util import verify_pass, save_user_to_db
+from apps.leases.models import Listing
+from apps.assets.models import Assets
+from apps.authentication.util import verify_pass
+from apps.utils import get_greeting
 
 
 @blueprint.route('/login', methods=['GET', 'POST'])
@@ -100,11 +103,20 @@ def dashboard():
     if current_user.location_id:
         location_info = Location.query.get(current_user.location_id)
 
-    return render_template('home//profile.html',
+    # Get listings information
+    listings_info = Listing.query.with_entities(Listing.id, Listing.name).all()
+
+    # Get assets information
+    assets_info = Assets.query.with_entities(Assets.id, Assets.assets_type).all()
+
+    return render_template('home/profile.html',
                            user_id=user_id,
                            welcome_message=welcome_message,
                            user=current_user,
-                           location_info=location_info)
+                           location_info=location_info,
+                           listings_info=listings_info,
+                           assets_info=assets_info,
+                           greeting=get_greeting())
 
 
 

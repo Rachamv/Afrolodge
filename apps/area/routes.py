@@ -54,3 +54,58 @@ def edit_location():
         return redirect(url_for('authentication_blueprint.dashboard'))
 
     return render_template('area/edit_location.html', form=form)
+
+@blueprint.route('/update_location', methods=['GET', 'POST'])
+@login_required
+def update_location():
+    form = LocationForm()
+    if form.validate_on_submit():
+        location_id = form.location_id.data  # Get the location id from the form
+        location = Location.query.get(location_id)
+
+        if not location:
+            flash('Location not found!', 'error')
+            return redirect(url_for('authentication_blueprint.dashboard'))
+
+        # Update location data
+        location.house_number = form.house_number.data
+        location.street = form.street.data
+        location.neighborhood = form.neighborhood.data
+        location.city = form.city.data
+        location.state = form.state.data
+        location.zipcode = form.zipcode.data
+        location.market = form.market.data
+        location.country_code = form.country_code.data
+        location.country = form.country.data
+        location.latitude = form.latitude.data
+        location.longitude = form.longitude.data
+        location.is_location_exact = form.is_location_exact.data
+
+        db.session.commit()
+
+        flash('Location information updated successfully!', 'success')
+        return redirect(url_for('authentication_blueprint.dashboard'))
+
+    return render_template('area/update_location.html', form=form)
+
+
+@blueprint.route('/delete_location', methods=['POST'])
+@login_required
+def delete_location():
+
+    location = Location.query.get(current_user.location_id)
+
+    if location:
+
+        db.session.delete(location)
+        db.session.commit()
+
+        current_user.location_id = None
+        db.session.commit()
+
+        flash('Location information deleted successfully!', 'success')
+    else:
+        flash('Location information not found!', 'error')
+
+    # Redirect the user to the dashboard or any other desired page
+    return redirect(url_for('authentication_blueprint.dashboard'))

@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired
 
 class CreateAssetForm(FlaskForm):
     assets_type = StringField('Asset Type', validators=[DataRequired()])
-    house_type = StringField('Room Type', validators=[DataRequired()])
+    house_type = StringField('House Type', validators=[DataRequired()])
     accommodates = IntegerField('Accommodates', validators=[DataRequired()])
     bathrooms = FloatField('Bathrooms', validators=[DataRequired()])
     bedrooms = IntegerField('Bedrooms', validators=[DataRequired()])
