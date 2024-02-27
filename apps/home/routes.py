@@ -7,7 +7,6 @@ from flask_login import current_user
 from flask import request
 
 @blueprint.route('/', methods=['GET'])
-
 def home():
     try:
         page = int(request.args.get('page', 1))
