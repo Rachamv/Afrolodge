@@ -66,11 +66,11 @@
         <div class="col mb-4">
           <div class="card h-100">
             {% if listing.is_link %}
-            <a href="{{ listing.picture_url }}">
+            <a href="{{ listing.listing_image }}">
             {% else %}
             <a href="#">
             {% endif %}
-                <img src="{{ url_for('static', filename='HouseImages/' + listing.picture_url) }}" class="card-img-top img-fluid" />
+                <img src="{{ url_for('static', filename='HouseImages/' + listing.listing_image) }}" class="card-img-top img-fluid" />
             </a>
 
             <div class="card-body">
@@ -78,7 +78,7 @@
                 ><h5 class="card-title">{{ listing.name }}</h5></a
               >
 
-              <p class="card-text">{{ listing.description }}</p>
+              <p class="card-text">{{ listing.summary }}</p>
 
               <div class="d-flex justify-content-between">
                 <p class="text-muted">Price: {{ listing.price }} {{ listing.currency }}</p>

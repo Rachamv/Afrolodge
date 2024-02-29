@@ -55,8 +55,8 @@
                 {% endfor %}
             </div>
             <div class="mb-3">
-                {{ form.experiences_offered.label }} {{ form.experiences_offered(class="form-control") }}
-                {% for error in form.experiences_offered.errors %}
+                {{ form.accommodates.label }} {{ form.accommodates(class="form-control") }}
+                {% for error in form.accommodates.errors %}
                     <span class="text-danger">{{ error }}</span>
                 {% endfor %}
             </div>
@@ -114,33 +114,9 @@
                     <span class="text-danger">{{ error }}</span>
                 {% endfor %}
             </div>
-            <div class="mb-3">
-                {{ form.daily_price.label }} {{ form.daily_price(class="form-control") }}
-                {% for error in form.daily_price.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <div class="mb-3">
-                {{ form.weekly_price.label }} {{ form.weekly_price(class="form-control") }}
-                {% for error in form.weekly_price.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <div class="mb-3">
-                {{ form.monthly_price.label }} {{ form.monthly_price(class="form-control") }}
-                {% for error in form.monthly_price.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <div class="mb-3">
-                {{ form.security_deposit.label }} {{ form.security_deposit(class="form-control") }}
-                {% for error in form.security_deposit.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <div class="mb-3">
-                {{ form.cleaning_fee.label }} {{ form.cleaning_fee(class="form-control") }}
-                {% for error in form.cleaning_fee.errors %}
+            <div class="mb-3 form-check">
+                {{ form.picture(class="form-check-input") }} {{ form.picture.label(class="form-check-label") }}
+                {% for error in form.picture.errors %}
                     <span class="text-danger">{{ error }}</span>
                 {% endfor %}
             </div>

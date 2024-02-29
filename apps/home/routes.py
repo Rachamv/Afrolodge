@@ -10,7 +10,7 @@ from flask import request
 def home():
     try:
         page = int(request.args.get('page', 1))
-        per_page = 10
+        per_page = 20
         offset = (page - 1) * per_page
         listings = Listing.query.offset(offset).limit(per_page).all()
         return render_template('home/index.html', listings=listings, greeting=get_greeting(), user=current_user, page=page)

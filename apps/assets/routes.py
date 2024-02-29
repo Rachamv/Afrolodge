@@ -85,7 +85,7 @@ def update_assets_form(assets_id):
         except IntegrityError as e:
             db.session.rollback()
             flash('Error updating asset: Database constraint violated. '
-                  f'Please check your data and try again.', 'error')
+                  'Please check your data and try again.', 'error')
         except Exception as e:
             db.session.rollback()
             flash(f'Error updating asset: {str(e)}', 'error')

@@ -1,7 +1,7 @@
 from apps import db
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
-from apps.review.models import Review
+
 
 class Assets(db.Model):
     __tablename__ = 'assets'
@@ -9,21 +9,14 @@ class Assets(db.Model):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('Users.id'))
     assets_type = Column(String(255))
-    house_type = Column(String(255))
     accommodates = Column(Integer)
     bathrooms = Column(Float, nullable=False)
     bedrooms = Column(Integer, nullable=False)
-    beds = Column(Integer, nullable=False)
-    bed_type = Column(String(255))
+    description = Column(String(1000), nullable=False)
     amenities = Column(String)
-    square_feet = Column(Float)
-    guests_included = Column(Integer, nullable=False)
-    extra_people = Column(Float, nullable=False)
     minimum_nights = Column(Integer)
-    maximum_nights = Column(Integer)
     location_id = Column(Integer, ForeignKey('location.id'))
     reviews_id = Column(Integer, ForeignKey('review.id'))
-    rate_type = Column(String(255))
 
     user = relationship("Users", back_populates="assets")
     location = relationship("Location")

@@ -1,16 +1,17 @@
 import os
 from flask_login import UserMixin
-from apps import db, login_manager
+from apps import db
 from sqlalchemy.orm import relationship
 from apps.authentication.util import hash_pass
 from apps.area.models import Location
 from apps.review.models import Review
 from apps.assets.models import Assets
+from apps.leases.models import Booking
+from apps.leases.models import Listing
 from datetime import datetime
 from werkzeug.utils import secure_filename
-
+import imghdr
 class Users(db.Model, UserMixin):
-
     __tablename__ = 'Users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -26,50 +27,54 @@ class Users(db.Model, UserMixin):
     location_id = db.Column(db.Integer, db.ForeignKey("location.id"))
     about = db.Column(db.Text)
     response_time = db.Column(db.Float)
-    profile_pic = db.Column(db.String(255))
+    profile_image = relationship("ProfileImage", uselist=False, back_populates="user")
+    remember_me = db.Column(db.Boolean, default=False)
     listings_count = db.Column(db.Integer, default=0)
-    profile_metadata_id = db.Column(db.Integer)
+    assets_count = db.Column(db.Integer, default=0)
+    reviews_count = db.Column(db.Integer, default=0)
+    bookings_count = db.Column(db.Integer, default=0)
 
-
+    bookings = relationship("Booking", back_populates="user")
     reviews = relationship("Review", back_populates="reviewer")
     assets = relationship("Assets", back_populates="user")
 
     def __init__(self, **kwargs):
         for attr, value in kwargs.items():
             if attr == "password":
-                value = hash_pass(value)  # Ensure value is bytes
+                value = hash_pass(value)
             setattr(self, attr, value)
 
     def __repr__(self):
         return f"<User {self.username}>"
 
     def update_password(self, new_password):
-        """
-        Updates the user's password.
-        """
         self.password = hash_pass(new_password)
 
     def get_location(self):
-        """
-        Returns the user's location object, or None if not associated.
-        """
         if self.location_id:
             return Location.query.get(self.location_id)
         return None
 
+    def get_profile_picture(self):
+        if self.profile_image:
+            return self.profile_image.filename
+        return None
+
+    def get_reviews(self):
+        return Review.query.filter_by(reviewer_id=self.id).all()
+
+    def get_listings(self):
+        return Listing.query.filter_by(user_id=self.id).all()
+
+    def get_assets(self):
+        return Assets.query.filter_by(user_id=self.id).all()
+
+    def get_bookings(self):
+        return Booking.query.filter_by(user_id=self.id).all()
+
     def update_profile(self, **kwargs):
-        """
-        Updates user profile information with provided keyword arguments.
-
-        Args:
-            kwargs: Keyword arguments specifying fields to update,
-                   e.g., name="New Name", phone="New Phone Number"
-
-        Raises:
-            ValueError: If invalid fields are provided.
-        """
         valid_fields = [
-            "name", "email", "phone", "about", "location_id", "profile_metadata_id"
+            "name", "email", "phone", "about", "location_id", "response_time", "profile_pic", "password"
         ]
         for field, value in kwargs.items():
             if field not in valid_fields:
@@ -78,44 +83,28 @@ class Users(db.Model, UserMixin):
         db.session.commit()
 
     def set_profile_picture(self, picture_data):
-        """
-        Sets the user's profile picture from provided data.
-
-        Args:
-            picture_data: Bytes representing the image data.
-
-        Raises:
-            ValueError: If invalid picture data is provided.
-        """
-        # Check if picture_data is provided
         if not picture_data:
             raise ValueError("No picture data provided")
 
         try:
-            # Create a unique filename for the profile picture
             filename = secure_filename(f"{self.username}_profile_pic.jpg")
-            # Save the picture to the profile_pics directory
             file_path = os.path.join('profile_pics', filename)
             with open(file_path, 'wb') as f:
                 f.write(picture_data)
-            # Update the profile_pic field in the database
-            self.profile_pic = filename
+            profile_image = ProfileImage(filename=filename, user=self)
+            db.session.add(profile_image)
             db.session.commit()
             print("Profile picture set successfully")
         except Exception as e:
             print(f"Error setting profile picture: {e}")
-            db.session.rollback()  # Rollback the session in case of error
+            db.session.rollback()
 
     def delete_profile_picture(self):
-        """
-        Deletes the user's profile picture.
-        """
-        if self.profile_pic:
+        if self.profile_image:
             try:
-                # Assuming profile pictures are stored in a directory named 'profile_pics'
-                file_path = os.path.join('profile_pics', self.profile_pic)
+                file_path = os.path.join('uploads', self.profile_image.filename)
                 os.remove(file_path)
-                self.profile_pic = None
+                db.session.delete(self.profile_image)
                 db.session.commit()
                 print("Profile picture deleted successfully")
             except Exception as e:
@@ -124,3 +113,30 @@ class Users(db.Model, UserMixin):
         else:
             print("User does not have a profile picture")
 
+
+
+class ProfileImage(db.Model):
+    __tablename__ = 'profile_images'
+
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(255), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'))
+    user = relationship("Users", back_populates="profile_image")
+
+    def __init__(self, filename):
+        self.filename = filename
+
+    @staticmethod
+    def save_image(file, user_id):
+        if file:
+            filename = secure_filename(file.filename)
+            file_path = os.path.join('uploads', filename)
+            image_format = imghdr.what(file_path)
+            if not image_format:
+                raise ValueError("Invalid image format")
+            file.save(file_path)
+            image = ProfileImage(filename=filename, user_id=user_id)
+            db.session.add(image)
+            db.session.commit()
+            return image
+        return None
