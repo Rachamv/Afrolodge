@@ -3,6 +3,7 @@ from apps.assets import blueprint
 from flask_login import login_required, current_user
 from apps.assets.forms import CreateAssetForm
 from apps.area.models import Location
+from apps.authentication.models import Users
 from apps.assets.models import Assets
 from apps.review.models import Review
 from apps import db
@@ -26,19 +27,13 @@ def create_asset():
             user=current_user,
             location=location,
             assets_type=form.assets_type.data,
-            house_type=form.house_type.data,
             accommodates=form.accommodates.data,
             bathrooms=form.bathrooms.data,
             bedrooms=form.bedrooms.data,
             beds=form.beds.data,
-            bed_type=form.bed_type.data,
+            description=form.description.data,
             amenities=form.amenities.data,
-            square_feet=form.square_feet.data,
-            guests_included=form.guests_included.data,
-            extra_people=form.extra_people.data,
             minimum_nights=form.minimum_nights.data,
-            maximum_nights=form.maximum_nights.data,
-            rate_type=form.rate_type.data
         )
 
         try:
@@ -52,20 +47,12 @@ def create_asset():
 
     return render_template('assets/create_asset_form.html', form=form)
 
+
 @blueprint.route('/assets/<int:assets_id>', methods=['GET'])
 def details(assets_id):
     asset = Assets.query.get_or_404(assets_id)
     recent_reviews = Review.query.filter_by(asset_id=assets_id).order_by(desc(Review.timestamp)).limit(10).all()
     return render_template('assets/asset_details.html', asset=asset, recent_reviews=recent_reviews)
-
-
-
-@blueprint.route('/my_assets', methods=['GET'])
-@login_required
-def my_assets():
-    assets = Assets.query.filter_by(user=current_user).all()
-    return render_template('assets/profile.html', assets=assets)
-
 
 @blueprint.route('/update_assets_form/<int:assets_id>', methods=['GET', 'POST'])
 @login_required
@@ -108,3 +95,14 @@ def delete_assets(assets_id):
 
     return redirect(url_for('home'))
 
+
+def get_assets(user_id):
+    """
+    Retrieve assets associated with the given user ID.
+    """
+    asset_info = None
+    user = Users.query.get(user_id)
+    if user:
+        if user.assets:
+            asset_info = Assets.query.with_entities(Assets.id, Assets.assets_type).all()
+    return asset_info

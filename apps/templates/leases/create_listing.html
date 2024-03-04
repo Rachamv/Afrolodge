@@ -31,12 +31,6 @@
                 {% endfor %}
             </div>
             <div class="mb-3">
-                {{ form.location_id.label }} {{ form.location_id(class="form-control") }}
-                {% for error in form.location_id.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <div class="mb-3">
                 {{ form.name.label }} {{ form.name(class="form-control") }}
                 {% for error in form.name.errors %}
                     <span class="text-danger">{{ error }}</span>
@@ -61,44 +55,8 @@
                 {% endfor %}
             </div>
             <div class="mb-3">
-                {{ form.neighborhood_overview.label }} {{ form.neighborhood_overview(class="form-control") }}
-                {% for error in form.neighborhood_overview.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <div class="mb-3">
-                {{ form.notes.label }} {{ form.notes(class="form-control") }}
-                {% for error in form.notes.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <div class="mb-3">
-                {{ form.transit.label }} {{ form.transit(class="form-control") }}
-                {% for error in form.transit.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <div class="mb-3">
-                {{ form.access.label }} {{ form.access(class="form-control") }}
-                {% for error in form.access.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <div class="mb-3">
-                {{ form.interaction.label }} {{ form.interaction(class="form-control") }}
-                {% for error in form.interaction.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <div class="mb-3">
-                {{ form.house_rules.label }} {{ form.house_rules(class="form-control") }}
-                {% for error in form.house_rules.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <div class="mb-3">
-                {{ form.picture_url.label }} {{ form.picture_url(class="form-control") }}
-                {% for error in form.picture_url.errors %}
+                {{ form.listing_image.label }} {{ form.listing_image(class="form-control") }}
+                {% for error in form.listing_image.errors %}
                     <span class="text-danger">{{ error }}</span>
                 {% endfor %}
             </div>
@@ -111,12 +69,6 @@
             <div class="mb-3">
                 {{ form.price.label }} {{ form.price(class="form-control") }}
                 {% for error in form.price.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <div class="mb-3 form-check">
-                {{ form.picture(class="form-check-input") }} {{ form.picture.label(class="form-check-label") }}
-                {% for error in form.picture.errors %}
                     <span class="text-danger">{{ error }}</span>
                 {% endfor %}
             </div>

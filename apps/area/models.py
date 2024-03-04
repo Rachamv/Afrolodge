@@ -1,4 +1,5 @@
 from apps import db
+from sqlalchemy.orm import relationship
 
 class Location(db.Model):
     __tablename__ = "location"
@@ -13,9 +14,9 @@ class Location(db.Model):
     market = db.Column(db.Text)
     country_code = db.Column(db.Text)
     country = db.Column(db.Text)
-    latitude = db.Column(db.Float)
-    longitude = db.Column(db.Float)
     is_location_exact = db.Column(db.Boolean)
+
+    users = relationship("Users", back_populates="location")
 
     def save_to_db(self):
         db.session.add(self)
@@ -35,10 +36,3 @@ class Location(db.Model):
 
     def update(self):
         db.session.commit()
-
-    def validate_coordinates(self):
-        if self.latitude is not None and not (-90 <= self.latitude <= 90):
-            raise ValueError("Latitude must be between -90 and 90")
-
-        if self.longitude is not None and not (-180 <= self.longitude <= 180):
-            raise ValueError("Longitude must be between -180 and 180")

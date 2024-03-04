@@ -4,6 +4,7 @@ from apps import db
 from apps.area import blueprint
 from apps.area.models import Location
 from apps.area.forms import LocationForm
+from apps.authentication.models import Users
 
 @blueprint.route('/edit_location', methods=['GET', 'POST'])
 @login_required
@@ -20,8 +21,6 @@ def edit_location():
         market = form.market.data
         country_code = form.country_code.data
         country = form.country.data
-        latitude = form.latitude.data
-        longitude = form.longitude.data
         is_location_exact = form.is_location_exact.data
 
         # Check if the user already has a location entry
@@ -39,8 +38,6 @@ def edit_location():
         location.market = market
         location.country_code = country_code
         location.country = country
-        location.latitude = latitude
-        location.longitude = longitude
         location.is_location_exact = is_location_exact
 
         db.session.add(location)
@@ -77,8 +74,6 @@ def update_location():
         location.market = form.market.data
         location.country_code = form.country_code.data
         location.country = form.country.data
-        location.latitude = form.latitude.data
-        location.longitude = form.longitude.data
         location.is_location_exact = form.is_location_exact.data
 
         db.session.commit()
@@ -109,3 +104,23 @@ def delete_location():
 
     # Redirect the user to the dashboard or any other desired page
     return redirect(url_for('authentication_blueprint.dashboard'))
+
+def get_location(user_id):
+    """
+    Retrieve location associated with the given user ID.
+    """
+    location_info = None
+    user = Users.query.get(user_id)
+    if user and user.location:
+        location_info = Location.query.filter_by(id=user.location_id).with_entities(
+            Location.id,
+            Location.house_number,
+            Location.street,
+            Location.neighborhood,
+            Location.market,
+            Location.city,
+            Location.state,
+            Location.zipcode,
+            Location.country
+        ).all()
+    return location_info

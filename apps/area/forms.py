@@ -12,6 +12,4 @@ class LocationForm(FlaskForm):
     market = StringField('Market')
     country_code = StringField('Country Code', validators=[DataRequired()])
     country = StringField('Country', validators=[DataRequired()])
-    latitude = FloatField('Latitude', validators=[NumberRange(min=-90, max=90)])
-    longitude = FloatField('Longitude', validators=[NumberRange(min=-180, max=180)])
     is_location_exact = BooleanField('Is Location Exact')

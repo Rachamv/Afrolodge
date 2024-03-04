@@ -1,0 +1,42 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h1 class="text-center">Create a New Booking</h1>
+      <form method="POST" action="{{ url_for('bookings.create_booking') }}">
+
+        <div class="form-group">
+          <label>Listing</label>
+          <select name="listing_id" class="form-control">
+            {% for listing in listings %}
+              <option value="{{listing.id}}">{{listing.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Check-In Date</label>
+            <input type="date" name="checkin_date" class="form-control">
+          </div>
+          <div class="form-group col-md-6">
+            <label>Check-Out Date</label>
+            <input type="date" name="checkout_date" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Number of Guests</label>
+          <input type="number" name="guests" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

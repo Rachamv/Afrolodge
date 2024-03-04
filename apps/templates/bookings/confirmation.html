@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h1 class="text-center">Booking Confirmation</h1>
+      <p>Dear {{ current_user.name }},</p>
+      <p>Thank your booking! Your booking details are as follows:</p>
+      <ul>
+        <li>Listing: {{ booking.listing.name }}</li>
+        <li>Check-in Date: {{ booking.checkin_date }}</li>
+        <li>Check-out Date: {{ booking.checkout_date }}</li>
+        <li>Number of Guests: {{ booking.guests }}</li>
+        <li>Total Price: ${{ booking.total_price }}</li>
+      </ul>
+      <p>You can view your bookings by visiting the <a href="{{ url_for('bookings') }}">Bookings</a> page.</p>
+      <p>Have a great stay!</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -62,7 +62,7 @@
                                     <div class="col-md-6">
                                         {% if user %}
                                             <p>Profile Picture:</p>
-                                            <img src="{{ user.profile_image }}" alt="Profile Picture">
+                                            <img src="{{ user.profile_pic }}" alt="Profile Picture">
                                         {% endif %}
                                     </div>
                                 </div>
@@ -90,10 +90,11 @@
                           </h2>
                         </div>
                         <div class="card-body">
-                          {% if listings_info %}
+                          {% if listing_info %}
                                 <ul>
-                                    {% for listing in user_listings %}
-                                        <li>Listing ID: {{ listing.id }}, Name: {{ listing.name }}</li>
+                                    {% for listing in listing_info %}
+                                        <li>Listing ID: {{ listing.id }}</li>
+                                        <li>Name: {{ listing.name }}</li>
                                     {% endfor %}
                                 </ul>
                           {% else %}
@@ -169,18 +170,16 @@
                         <div class="card-body">
                             {% if location_info %}
                                 <ul>
-                                    <li>Location ID: {{ location_info.id }}</li>
-                                    <li>House Number: {{ location_info.house_number }}</li>
-                                    <li>Street: {{ location_info.street }}</li>
-                                    <li>Neighborhood: {{ location_info.neighborhood }}</li>
-                                    <li>City: {{ location_info.city }}</li>
-                                    <li>State: {{ location_info.state }}</li>
-                                    <li>Zipcode: {{ location_info.zipcode }}</li>
-                                    <li>Market: {{ location_info.market }}</li>
-                                    <li>Country Code: {{ location_info.country_code }}</li>
-                                    <li>Country: {{ location_info.country }}</li>
-                                    <li>Latitude: {{ location_info.latitude }}</li>
-                                    <li>Longitude: {{ location_info.longitude }}</li>
+                                    {% for location in location_info %}
+                                        <li>Location ID: {{ location.id }}</li>
+                                        <li>House Number: {{ location.house_number }}</li>
+                                        <li>Street: {{ location.street }}</li>
+                                        <li>Neighborhood: {{ location.neighborhood }}</li>
+                                        <li>Market: {{ location.market }}</li>
+                                        <li>City: {{ location.city }}</li>
+                                        <li>State: {{ location.state }}</li>
+                                        <li>Country: {{ location.country }}</li>
+                                    {% endfor %}
                                 </ul>
                             {% else %}
                                 <p class="nav-item">No information available. Please add.</p>
@@ -208,16 +207,16 @@
                         </h2>
                       </div>
                       <div class="card-body">
-                        {% if assets_info %}
-                            <ul>
-                                {% for asset in assets %}
-                                    <li>{{ asset.assets_id }}</li>
-                                    <li>{{ asset.assets_type }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <p class="nav-item">No information available. Please add.</p>
-                        {% endif %}
+                        {% if asset_info %}
+                                <ul>
+                                    {% for asset in asset_info %}
+                                        <li>ID: {{ asset.id }}</li>
+                                        <li>Type: {{ asset.assets_type }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="nav-item">No information available. Please add.</p>
+                            {% endif %}
                         </div>
                       <div class="card-tools">
                         <ul class="nav nav-pills ml-auto">

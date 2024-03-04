@@ -78,31 +78,6 @@
                 <div class="text-danger">{{ error }}</div>
             {% endfor %}
         </div>
-
-        <div class="mb-3">
-            <label for="latitude" class="form-label">Latitude:</label>
-            {{ form.latitude(class="form-control") }}
-            {% for error in form.latitude.errors %}
-                <div class="text-danger">{{ error }}</div>
-            {% endfor %}
-        </div>
-
-        <div class="mb-3">
-            <label for="longitude" class="form-label">Longitude:</label>
-            {{ form.longitude(class="form-control") }}
-            {% for error in form.longitude.errors %}
-                <div class="text-danger">{{ error }}</div>
-            {% endfor %}
-        </div>
-
-        <div class="mb-3">
-            <label for="is_location_exact" class="form-label">Is Location Exact:</label>
-            {{ form.is_location_exact(class="form-control") }}
-            {% for error in form.is_location_exact.errors %}
-                <div class="text-danger">{{ error }}</div>
-            {% endfor %}
-        </div>
-
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
 </div>

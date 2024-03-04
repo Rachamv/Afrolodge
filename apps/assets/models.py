@@ -1,7 +1,14 @@
 from apps import db
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
+
+asset_review_association = Table(
+    'asset_review_association',
+    db.Model.metadata,
+    Column('asset_id', Integer, ForeignKey('assets.id')),
+    Column('review_id', Integer, ForeignKey('review.id'))
+)
 
 class Assets(db.Model):
     __tablename__ = 'assets'
@@ -12,15 +19,15 @@ class Assets(db.Model):
     accommodates = Column(Integer)
     bathrooms = Column(Float, nullable=False)
     bedrooms = Column(Integer, nullable=False)
-    description = Column(String(1000), nullable=False)
+    beds = Column(Integer, nullable=False)
     amenities = Column(String)
+    description = Column(String(500), nullable=False)
     minimum_nights = Column(Integer)
     location_id = Column(Integer, ForeignKey('location.id'))
-    reviews_id = Column(Integer, ForeignKey('review.id'))
 
     user = relationship("Users", back_populates="assets")
     location = relationship("Location")
-    reviews = relationship("Review")
+    reviews = relationship("Review", secondary=asset_review_association)
 
     def save_to_db(self):
         try:
@@ -60,17 +67,4 @@ class Assets(db.Model):
         if assets_type is not None:
             query = query.filter_by(assets_type=assets_type)
 
-        if amenities is not None:
-            query = query.filter(cls.amenities.contains(amenities))
-
         return query.all()
-
-    def get_average_rating(self):
-        if not self.reviews:
-            return None
-
-        total_rating = sum(review.rating for review in self.reviews)
-        return total_rating / len(self.reviews)
-
-    def get_specific_reviews(self, count=5):
-        return self.reviews[:count]
