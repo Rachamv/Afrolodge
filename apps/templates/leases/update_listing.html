@@ -1,0 +1,44 @@
+{% extends "layouts/base.html" %}
+{% block title %}Update Listing {% endblock %}
+
+{% block content %}
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Update Listing</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6">
+            <form method="POST" action="{{ url_for('leases.update_listing', listing_id=listing.id) }}">
+              {{ form.hidden_tag() }}
+              {{ form.csrf_token }}
+
+              <!-- Render form fields -->
+              {% for field in form %}
+                <div class="form-group">
+                  {{ field.label }}
+                  {{ field }}
+                  {% if field.errors %}
+                    <div class="text-danger">{{ ', '.join(field.errors) }}</div>
+                  {% endif %}
+                </div>
+              {% endfor %}
+
+              <button type="submit" class="btn btn-primary">Update Listing</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock %}

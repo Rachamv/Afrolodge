@@ -9,7 +9,7 @@ from apps.review.models import Review
 from apps import db
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
-
+from apps.utils import get_greeting
 
 
 @blueprint.route('/create', methods=['GET', 'POST'])
@@ -53,6 +53,12 @@ def details(assets_id):
     asset = Assets.query.get_or_404(assets_id)
     recent_reviews = Review.query.filter_by(asset_id=assets_id).order_by(desc(Review.timestamp)).limit(10).all()
     return render_template('assets/asset_details.html', asset=asset, recent_reviews=recent_reviews)
+
+@blueprint.route('/assets/<int:assets_id>', methods=['GET'])
+@login_required
+def view_assets(assets_id):
+    asset = Assets.query.get_or_404(assets_id)
+    return render_template('assets/assets_detail.html', asset=asset, greeting=get_greeting(), user=current_user)
 
 @blueprint.route('/update_assets_form/<int:assets_id>', methods=['GET', 'POST'])
 @login_required
@@ -104,5 +110,5 @@ def get_assets(user_id):
     user = Users.query.get(user_id)
     if user:
         if user.assets:
-            asset_info = Assets.query.with_entities(Assets.id, Assets.assets_type).all()
+            asset_info = Assets.query.filter_by(user_id=user_id).with_entities(Assets.id, Assets.assets_type).all()
     return asset_info

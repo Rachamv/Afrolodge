@@ -1,0 +1,51 @@
+{% extends "layouts/base.html" %}
+{% block title %} Listing Details {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>{{ listing.name }} Details</h2>
+    <ul>
+        <li>Listing ID: {{ listing.id }}</li>
+        <li>Name: {{ listing.name }}</li>
+        <li>Summary: {{ listing.summary or 'Not provided' }}</li>
+        <li>Description: {{ listing.description or 'Not provided' }}</li>
+        <li>Accommodates: {{ listing.accommodates }}</li>
+        <li>Price: {{ listing.price or 'Not provided' }}</li>
+        <li>Instant Bookable: {{ 'Yes' if listing.instant_bookable else 'No' }}</li>
+        <li>Overall Satisfaction: {{ listing.overall_satisfaction or 'Not provided' }}</li>
+    </ul>
+    {% if current_user == listing.user %}
+    <div>
+        <a href="{{ url_for('leases_blueprint.update_listing', listing_id=listing.id) }}" class="btn btn-primary">Update Listing</a>
+        <form action="{{ url_for('leases_blueprint.delete_listing', listing_id=listing.id) }}" method="POST" style="display: inline-block;">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this listing?')">Delete Listing</button>
+        </form>
+    </div>
+    {% endif %}
+    <!-- Add Booking Form -->
+    <form action="" method="POST">
+      <div class="form-group">
+        <label for="checkin_date">Check-in Date:</label>
+        <input type="date" id="checkin_date" name="checkin_date" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="checkout_date">Check-out Date:</label>
+        <input type="date" id="checkout_date" name="checkout_date" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="num_guests">Number of Guests:</label>
+        <input type="number" id="num_guests" name="num_guests" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="total_price">Total Price:</label>
+        <input type="number" id="total_price" name="total_price" class="form-control">
+      </div>
+      <!-- Add more input fields as needed for booking details -->
+      <input type="hidden" name="listing_id" value="{{ listing.id }}">
+      <input type="hidden" name="user_id" value="{{ user.id }}">
+      <button type="submit" class="btn btn-primary">Add Booking</button>
+    </form>
+
+    <a href="{{ url_for('home_blueprint.home') }}" class="btn btn-primary">Back to Listings</a>
+</div>
+{% endblock %}

@@ -3,12 +3,9 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from apps import db
 from apps.authentication import blueprint
-from apps.authentication.forms import LoginForm, CreateAccountForm
+from apps.authentication.forms import LoginForm, CreateAccountForm, ChangePasswordForm, UpdateProfileForm
 from apps.authentication.models import Users
-from apps.area.models import Location
-from apps.leases.models import Listing
-from apps.assets.models import Assets
-from apps.authentication.util import verify_pass
+from apps.authentication.util import verify_pass, hash_pass
 from apps.utils import get_greeting
 from apps.leases.routes import get_listings
 from apps.assets.routes import get_assets
@@ -84,13 +81,12 @@ def register():
                                    success=False,
                                    form=create_account_form)
 
-        # Add logic to create a new user (using your model, e.g., Users)
         new_user = Users(username=username,  name=name, phone=phone, email=email, password=password)
         db.session.add(new_user)
         db.session.commit()
 
         flash('Registration successful!', 'success')
-        return redirect(url_for('authentication_blueprint.login'))
+        return redirect(url_for('login'))
 
     return render_template('accounts/register.html', form=create_account_form)
 
@@ -106,6 +102,9 @@ def dashboard():
     listing_info = get_listings(user_id)
     asset_info = get_assets(user_id)
 
+    # Debugging print statements
+    print("Listing info:", listing_info)
+
     return render_template('home/profile.html',
                            user_id=user_id,
                            welcome_message=welcome_message,
@@ -116,11 +115,46 @@ def dashboard():
                            greeting=get_greeting())
 
 
+@blueprint.route('/dashboard/edit_profile', methods=['GET', 'POST'])
+@login_required
+def update_profile():
+    update_profile_form = UpdateProfileForm(obj=current_user)
 
-# @blueprint.route('/dashboard/edit_profile', methods=['GET', 'POST'])
-# @login_required
-# def update_profile():
+    if update_profile_form.validate_on_submit():
+        # Update user information
+        current_user.name = update_profile_form.name.data
+        current_user.phone = update_profile_form.phone.data
+        current_user.email = update_profile_form.email.data
+        current_user.about = update_profile_form.about.data
+        current_user.profile_pic = update_profile_form.profile_pic.data
+        current_user.response_time = update_profile_form.response_time.data
 
-# @blueprint.route('/dashboard/change_password', methods=['GET', 'POST'])
-# @login_required
-# def change_password():
+        db.session.commit()
+
+        flash('Profile updated successfully!', 'success')
+        return redirect(url_for('authentication_blueprint.dashboard'))
+
+    return render_template('accounts/update_profile.html', form=update_profile_form)
+
+@blueprint.route('/dashboard/change_password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    change_password_form = ChangePasswordForm()
+
+    if change_password_form.validate_on_submit():
+        current_password = change_password_form.current_password.data
+        new_password = change_password_form.new_password.data
+
+        # Verify the current password
+        if not verify_pass(current_password, current_user.password):
+            flash('Current password is incorrect', 'error')
+            return redirect(url_for('authentication_blueprint.change_password'))
+
+        # Update the password
+        current_user.password = hash_pass(new_password)
+        db.session.commit()
+
+        flash('Password changed successfully!', 'success')
+        return redirect(url_for('authentication_blueprint.login'))
+
+    return render_template('accounts/change_password.html', form=change_password_form)

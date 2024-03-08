@@ -1,4 +1,7 @@
 import os, random, string
+from dotenv import load_dotenv
+load_dotenv()
+
 
 class Config:
 
@@ -68,3 +71,12 @@ config_dict = {
     'Production': ProductionConfig,
     'Debug'     : DebugConfig
 }
+
+class EmailConfig:
+    MAIL_SERVER = os.getenv('MAIL_SERVER')
+    MAIL_PORT = int(os.getenv('MAIL_PORT'))
+    MAIL_USERNAME = os.getenv('MAIL_USERNAME')
+    MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
+    MAIL_USE_TLS = os.getenv('MAIL_USE_TLS', 'True') == 'True'
+    MAIL_USE_SSL = os.getenv('MAIL_USE_SSL', 'False') == 'True'
+    MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')

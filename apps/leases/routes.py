@@ -1,9 +1,9 @@
-from flask import  render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for
 from flask_login import login_required, current_user
 from apps import db
 from apps.leases.models import Listing
 from apps.leases import blueprint
-from apps.leases.forms import ListingForm
+from apps.leases.forms import ListingForm, UpdateListingForm
 from apps.authentication.models import Users
 from apps.assets.models import Assets
 from apps.utils import get_greeting
@@ -12,19 +12,20 @@ from apps.utils import get_greeting
 @login_required
 def create_listing():
     form = ListingForm()
-
     print(form.data)
     form_valid = form.validate_on_submit()
     print(f"Form is valid: {form_valid}")
-
     if form_valid:
+        # Check if the provided asset_id belongs to the current user
+        owned_assets = Assets.query.filter_by(user_id=current_user.id).all()
+        asset_ids = [asset.id for asset in owned_assets]
 
-        assets = Assets.query.get(form.asset_id.data)
-        if not assets:
-            flash('Asset not found.', 'error')
-            return redirect(url_for('assets/create_asset_form.html'))
+        if form.asset_id.data not in asset_ids:
+            flash('You can only create listings for your own assets.', 'error')
+            return redirect(url_for('leases.create_listing'))
 
         new_listing = Listing(
+            user_id=current_user.id,
             asset_id=form.asset_id.data,
             name=form.name.data,
             summary=form.summary.data,
@@ -53,24 +54,26 @@ def create_listing():
 @login_required
 def view_listing(listing_id):
     listing = Listing.query.get_or_404(listing_id)
-    return render_template('home/assets_detail.html', listing=listing, greeting=get_greeting(), user=current_user)
+    return render_template('leases/listing_detail.html', listing=listing, greeting=get_greeting(), user=current_user)
 
 @blueprint.route('/listing/<int:listing_id>', methods=['PUT'])
 @login_required
 def update_listing(listing_id):
     listing = Listing.query.get_or_404(listing_id)
-    form = ListingForm()
+    form = UpdateListingForm(obj=listing)
+
     if form.validate_on_submit():
         form.populate_obj(listing)
+
         try:
             db.session.commit()
             flash('Listing updated successfully!', 'success')
+            return redirect(url_for('leases.view_listings'))
         except Exception as e:
             db.session.rollback()
             flash(f'Error updating listing: {str(e)}', 'error')
-    else:
-        flash('Form validation failed!', 'error')
-    return redirect(url_for('leases.view_listings'))
+
+    return render_template('leases/update_listing.html', form=form, listing=listing)
 
 @blueprint.route('/listing/<int:listing_id>', methods=['DELETE'])
 @login_required
@@ -88,9 +91,15 @@ def delete_listing(listing_id):
 def get_listings(user_id):
     listing_info = None
     user = Users.query.get(user_id)
+    print(user)
+
     if user:
+        print(user.listing)
+
         if user.listing:
             listing_info = Listing.query.filter_by(user_id=user_id).with_entities(Listing.id, Listing.name).all()
-    print(listing_info.data)
+            print(listing_info)
     return listing_info
+
+
 

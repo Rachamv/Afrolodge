@@ -45,24 +45,27 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         {% if user %}
-                                            <ul>
-                                                <li>User ID: {{ user.id }}</li>
-                                                <li>Username: {{ user.username }}</li>
-                                                <li>Email: {{ user.email }}</li>
-                                                <li>Phone: {{ user.phone }}</li>
-                                                <li>Date Registered: {{ user.registration_date }}</li>
-                                                <li>About: {{ user.about }}</li>
-                                                <li>Response Time: {{ user.response_time }}</li>
-                                                <li>Listings Count: {{ user.listings_count }}</li>
-                                            </ul>
+                                        <ul>
+                                            <li>User ID: {{ user.id }}</li>
+                                            <li>Username: {{ user.username }}</li>
+                                            <li>Email: {{ user.email }}</li>
+                                            <li>Phone: {{ user.phone }}</li>
+                                            <li>Date Registered: {{ user.registration_date }}</li>
+                                            <li>About: {{ user.about }}</li>
+                                            <li>Response Time: {{ user.response_time }}</li>
+                                            <li>Listings Count: {{ user.listings_count }}</li>
+                                        </ul>
                                         {% else %}
-                                            <p>No information available. Please add.</p>
+                                        <p>No information available. Please add.</p>
                                         {% endif %}
                                     </div>
                                     <div class="col-md-6">
-                                        {% if user %}
-                                            <p>Profile Picture:</p>
-                                            <img src="{{ user.profile_pic }}" alt="Profile Picture">
+                                        {% if user and user.profile_pic %}
+                                        <p>Profile Picture:</p>
+                                        <img src="{{ url_for('static', filename='HouseImages/' + user.profile_pic) }}"
+                                            class="card-img-top img-fluid">
+                                        {% else %}
+                                        <p>No profile picture available.</p>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -71,10 +74,13 @@
                         <div class="card-tools">
                             <ul class="nav nav-pills ml-auto">
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Update Profile</a>
+                                    <a class="nav-link active"
+                                        href="{{ url_for('authentication_blueprint.update_profile') }}"
+                                        data-toggle="tab">Update Profile</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#sales-chart" data-toggle="tab">Change Password</a>
+                                    <a class="nav-link" href="{{ url_for('authentication_blueprint.change_password') }}"
+                                        data-toggle="tab">Change Password</a>
                                 </li>
                             </ul>
                         </div>
@@ -84,32 +90,40 @@
                     <!-- Listed Assets -->
                     <div class="card">
                         <div class="card-header">
-                          <h2 class="card-title">
-                            <i class="fas fa-chart-pie mr-1"></i>
-                            Listed Assets
-                          </h2>
+                            <h2 class="card-title">
+                                <i class=""></i>
+                                Listed Assets
+                            </h2>
                         </div>
                         <div class="card-body">
-                          {% if listing_info %}
-                                <ul>
-                                    {% for listing in listing_info %}
-                                        <li>Listing ID: {{ listing.id }}</li>
-                                        <li>Name: {{ listing.name }}</li>
-                                    {% endfor %}
-                                </ul>
-                          {% else %}
-                              <p class="nav-item">No information available. Please add.</p>
-                          {% endif %}
-                          </div>
+                            {% if listing_info %}
+                            <ol>
+                                {% for listing in listing_info %}
+                                <li>
+                                    <a href="{{ url_for('leases_blueprint.view_listing', listing_id=listing.id) }}"
+                                        data-toggle="tooltip" title="Click to view details">
+                                        <ul>
+                                            <li>Listing ID: {{ listing.id }}</li>
+                                            <li>Listing Name: {{ listing.name }}</li>
+                                        </ul>
+                                </li>
+                                {% endfor %}
+                            </ol>
+                            {% else %}
+                            <p class="nav-item">No information available. Please add.</p>
+                            {% endif %}
+                        </div>
                         <div class="card-tools">
-                          <ul class="nav nav-pills ml-auto">
-                            <li class="nav-item">
-                              <a class="nav-link" href="" data-toggle="tab">Update</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link {{ create_link_active }}" href="{{ url_for('leases_blueprint.create_listing') }}" data-toggle="tab">List Assets</a>
-                            </li>
-                          </ul>
+                            <ul class="nav nav-pills ml-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-toggle="tab">Update</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ create_link_active }}"
+                                        href="{{ url_for('leases_blueprint.create_listing') }}" data-toggle="tab">List
+                                        Assets</a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <!-- /.card -->
@@ -125,16 +139,16 @@
                         </div>
                         <div class="card-body">
                             {% if reviews %}
-                                <ul>
-                                    {% for review in reviews %}
-                                        <li>{{ review.review_id }}</li>
-                                        <li>{{ review.review }}</li>
-                                    {% endfor %}
-                                </ul>
+                            <ul>
+                                {% for review in reviews %}
+                                <li>{{ review.review_id }}</li>
+                                <li>{{ review.review }}</li>
+                                {% endfor %}
+                            </ul>
                             {% else %}
-                                <p class="nav-item">
-                                    No information available. Please add.
-                                </p>
+                            <p class="nav-item">
+                                No information available. Please add.
+                            </p>
                             {% endif %}
 
                         </div>
@@ -145,7 +159,8 @@
                                     <a class="nav-link" href="" data-toggle="tab">Update</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link {{ create_link_active }}" href="" data-toggle="tab">Add Review</a>
+                                    <a class="nav-link {{ create_link_active }}" href="" data-toggle="tab">Add
+                                        Review</a>
                                 </li>
                             </ul>
                         </div>
@@ -169,29 +184,31 @@
                         </div><!-- /.card-header -->
                         <div class="card-body">
                             {% if location_info %}
-                                <ul>
-                                    {% for location in location_info %}
-                                        <li>Location ID: {{ location.id }}</li>
-                                        <li>House Number: {{ location.house_number }}</li>
-                                        <li>Street: {{ location.street }}</li>
-                                        <li>Neighborhood: {{ location.neighborhood }}</li>
-                                        <li>Market: {{ location.market }}</li>
-                                        <li>City: {{ location.city }}</li>
-                                        <li>State: {{ location.state }}</li>
-                                        <li>Country: {{ location.country }}</li>
-                                    {% endfor %}
-                                </ul>
+                            <ul>
+                                {% for location in location_info %}
+                                <li>Location ID: {{ location.id }}</li>
+                                <li>House Number: {{ location.house_number }}</li>
+                                <li>Street: {{ location.street }}</li>
+                                <li>Neighborhood: {{ location.neighborhood }}</li>
+                                <li>Market: {{ location.market }}</li>
+                                <li>City: {{ location.city }}</li>
+                                <li>State: {{ location.state }}</li>
+                                <li>Country: {{ location.country }}</li>
+                                {% endfor %}
+                            </ul>
                             {% else %}
-                                <p class="nav-item">No information available. Please add.</p>
+                            <p class="nav-item">No information available. Please add.</p>
                             {% endif %}
                         </div>
                         <div class="card-tools">
                             <ul class="nav nav-pills ml-auto">
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="{{ url_for('area_blueprint.update_location') }}" data-toggle="tab">Update Your Location</a>
+                                    <a class="nav-link active" href="{{ url_for('area_blueprint.update_location') }}"
+                                        data-toggle="tab">Update Your Location</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ url_for('area_blueprint.edit_location') }}" data-toggle="tab">Add Location</a>
+                                    <a class="nav-link" href="{{ url_for('area_blueprint.edit_location') }}"
+                                        data-toggle="tab">Add Location</a>
                                 </li>
                             </ul>
                         </div>
@@ -200,34 +217,43 @@
 
                     <!-- Assets Own -->
                     <div class="card">
-                      <div class="card-header">
-                        <h2 class="card-title">
-                          <i class="fas fa-chart-pie mr-1"></i>
-                          Assets Own
-                        </h2>
-                      </div>
-                      <div class="card-body">
-                        {% if asset_info %}
-                                <ul>
-                                    {% for asset in asset_info %}
-                                        <li>ID: {{ asset.id }}</li>
-                                        <li>Type: {{ asset.assets_type }}</li>
-                                    {% endfor %}
-                                </ul>
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-chart-pie mr-1"></i>
+                                Assets Own
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            {% if asset_info %}
+                            <ol>
+                                {% for asset in asset_info %}
+                                <li>
+                                    <a href="{{ url_for('assets_blueprint.view_assets', assets_id=asset.id) }}"
+                                        data-toggle="tooltip" title="Click to view details">
+                                        <ul>
+                                            <li>ID: {{ asset.id}}</li>
+                                            <li>Type: {{ asset.assets_type }}</li>
+                                        </ul>
+                                </li>
+                                {% endfor %}
+                            </ol>
                             {% else %}
-                                <p class="nav-item">No information available. Please add.</p>
+
+                            <p class="nav-item">No information available. Please add.</p>
                             {% endif %}
                         </div>
-                      <div class="card-tools">
-                        <ul class="nav nav-pills ml-auto">
-                          <li class="nav-item">
-                            <a class="nav-link" href="" data-toggle="tab">Update Your Assets</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link {{ create_link_active }}" href="{{ url_for('assets_blueprint.create_asset') }}" data-toggle="tab">Add Assets</a>
-                          </li>
-                        </ul>
-                      </div>
+                        <div class="card-tools">
+                            <ul class="nav nav-pills ml-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="" data-toggle="tab">Update Your Assets</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ create_link_active }}"
+                                        href="{{ url_for('assets_blueprint.create_asset') }}" data-toggle="tab">Add
+                                        Assets</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     <!-- /.card -->
@@ -244,18 +270,18 @@
 
                         <div class="card-body">
                             {% if bookings %}
-                                <ul>
-                                    {% for booking in bookings %}
-                                        <li>{{ booking.booking_id }}</li>
-                                        <li>{{ booking.booking_date }}</li>
-                                        <li>{{ booking.booking_time }}</li>
-                                        <li>{{ booking.booking_status }}</li>
-                                    {% endfor %}
-                                </ul>
+                            <ul>
+                                {% for booking in bookings %}
+                                <li>{{ booking.booking_id }}</li>
+                                <li>{{ booking.booking_date }}</li>
+                                <li>{{ booking.booking_time }}</li>
+                                <li>{{ booking.booking_status }}</li>
+                                {% endfor %}
+                            </ul>
                             {% else %}
-                                <p class="nav-item">
-                                    No information available. Please add.
-                                </p>
+                            <p class="nav-item">
+                                No information available. Please add.
+                            </p>
                             {% endif %}
 
                         </div>
@@ -266,7 +292,8 @@
                                     <a class="nav-link" href="" data-toggle="tab">Update</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link {{ create_link_active }}" href="" data-toggle="tab">Add Booking</a>
+                                    <a class="nav-link {{ create_link_active }}" href="" data-toggle="tab">Add
+                                        Booking</a>
                                 </li>
                             </ul>
                         </div>
@@ -286,3 +313,11 @@
 </div>
 {% endblock content %}
 
+{% block scripts %}
+<script>
+    // Initialize Bootstrap tooltips
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+{% endblock scripts %}

@@ -1,0 +1,19 @@
+{% extends "layouts/base.html" %}
+{% block title %} Listing Details {% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2>{{ listing.name }} Details</h2>
+    <ul>
+      <li>Listing ID: {{ listing.id }}</li>
+      <li>Name: {{ listing.name }}</li>
+      <li>Summary: {{ listing.summary or 'Not provided' }}</li>
+      <li>Description: {{ listing.description or 'Not provided' }}</li>
+      <li>Accommodates: {{ listing.accommodates }}</li>
+      <li>Price: {{ listing.price or 'Not provided' }}</li>
+      <li>Instant Bookable: {{ 'Yes' if listing.instant_bookable else 'No' }}</li>
+      <li>Overall Satisfaction: {{ listing.overall_satisfaction or 'Not provided' }}</li>
+    </ul>
+    <a href="{{ url_for('home_blueprint.home') }}" class="btn btn-primary">Back to Listings</a>
+  </div>
+{% endblock %}
